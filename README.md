@@ -1,3 +1,5 @@
+![](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiSG1mMENkUmFjT2RpZTZuMmxQY0d2T2ZKMUVvVGZXVVYvbFM4RDk4N3VybDZHbUlHbW82YnNMTThnbVhlYXVYV3NqRFRDZHpuby9mU2tlUHBhckRNMXlZPSIsIml2UGFyYW1ldGVyU3BlYyI6IldGdjF1OUtuRlVSSVh4eXIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+
 To run this project as a docker container
 
 - Build the code by running the following command in the root folder of the project `./gradlew build`
