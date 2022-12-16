@@ -20,6 +20,10 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url = uri("https://repository.openmindonline.it")
+	}
+
 }
 
 dependencies {
@@ -29,6 +33,18 @@ dependencies {
 
 	implementation("org.apache.poi:poi:5.2.0!!")
 	implementation("org.apache.poi:poi-ooxml:5.2.0!!")
+
+//	// https://mvnrepository.com/artifact/org.apache.batik/org.apache.batik.dom.svg
+	implementation("org.apache.batik:org.apache.batik.dom.svg:1.6.0-20081006")
+//	// https://mvnrepository.com/artifact/org.apache.batik/org.apache.batik.bridge
+	implementation("org.apache.batik:org.apache.batik.bridge:1.6.0-20081006")
+	// https://mvnrepository.com/artifact/org.apache.batik/org.apache.batik.svggen
+	implementation("org.apache.batik:org.apache.batik.svggen:1.6.0-20081006")
+
+
+
+
+//	implementation("org.jfree:org.jfree.svg:5.0.3")
 
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

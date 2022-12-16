@@ -2,6 +2,7 @@ package com.example.rangola
 
 import com.example.rangola.dto.Conditional
 import com.example.rangola.dto.Order
+import com.example.rangola.service.SvgFiller
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
