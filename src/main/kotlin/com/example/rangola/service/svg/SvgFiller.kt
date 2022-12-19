@@ -1,4 +1,4 @@
-package com.example.rangola.service
+package com.example.rangola.service.svg
 
 import com.example.rangola.domain.dto.data.colorCodes
 import org.w3c.dom.Document

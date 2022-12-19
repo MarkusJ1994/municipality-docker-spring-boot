@@ -2,9 +2,9 @@ package com.example.rangola.controller
 
 import com.example.rangola.domain.dto.Order
 import com.example.rangola.domain.dto.RowEntry
-import com.example.rangola.service.ExcelParser
-import com.example.rangola.service.OutputWriter
-import com.example.rangola.service.SvgFiller
+import com.example.rangola.service.excel.ExcelParser
+import com.example.rangola.service.excel.OutputWriter
+import com.example.rangola.service.svg.SvgFiller
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -18,11 +18,6 @@ import java.util.*
 
 @RestController
 class MunicipalityController {
-
-    @GetMapping("/")
-    fun index(): String {
-        return "Greetings from Rangola!";
-    }
 
     @PostMapping("/order")
     @ResponseBody

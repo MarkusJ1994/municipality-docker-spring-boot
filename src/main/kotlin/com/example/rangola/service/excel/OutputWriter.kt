@@ -1,4 +1,4 @@
-package com.example.rangola.service
+package com.example.rangola.service.excel
 
 import com.example.rangola.domain.dto.RowEntry
 
