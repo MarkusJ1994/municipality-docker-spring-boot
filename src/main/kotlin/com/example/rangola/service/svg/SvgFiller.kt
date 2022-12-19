@@ -5,6 +5,7 @@ import org.w3c.dom.Document
 import org.w3c.dom.Node
 import java.io.File
 import java.net.URI
+import java.net.URL
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.Source
@@ -14,12 +15,18 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
 
-class SvgFiller(uri: URI) {
+class SvgFiller {
 
     private val document: Document
 
     init {
-        document = initDocument(uri)
+        val resource: URL? = javaClass.classLoader.getResource("SWE-Map_Kommuner2007.svg")
+        if (resource != null) {
+            val uri = resource.toURI()
+            document = initDocument(uri)
+        } else {
+            throw IllegalStateException("Template svg map not found")
+        }
     }
 
     private fun initDocument(uri: URI): Document {

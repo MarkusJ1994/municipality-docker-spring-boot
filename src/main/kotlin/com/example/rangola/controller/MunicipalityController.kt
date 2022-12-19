@@ -2,22 +2,20 @@ package com.example.rangola.controller
 
 import com.example.rangola.domain.dto.Order
 import com.example.rangola.domain.dto.RowEntry
+import com.example.rangola.service.MunicipalityService
 import com.example.rangola.service.excel.ExcelParser
 import com.example.rangola.service.excel.OutputWriter
-import com.example.rangola.service.svg.SvgFiller
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
-import java.net.URL
 import java.util.*
 
 
 @RestController
-class MunicipalityController {
+class MunicipalityController(val municipalityService: MunicipalityService) {
 
     @PostMapping("/order")
     @ResponseBody
@@ -29,21 +27,27 @@ class MunicipalityController {
             .body(OutputWriter().writeOutput(rowEntries))
     }
 
+    @PostMapping("/order/map/preview", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun orderColoredMapPreview(
+        @RequestParam("file") file: MultipartFile,
+        @RequestParam("municipalityCol") municipalityCol: String,
+        @RequestParam("valueCol") valueCol: String
+    ): ResponseEntity<InputStreamResource> {
+        val output = municipalityService.getColoredMap(file, municipalityCol, valueCol)
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(InputStreamResource(output))
+    }
+
     @PostMapping("/order/map", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun orderColoredMap(
         @RequestParam("file") file: MultipartFile,
         @RequestParam("municipalityCol") municipalityCol: String,
         @RequestParam("valueCol") valueCol: String
     ): ResponseEntity<InputStreamResource> {
-        val resource: URL = javaClass.classLoader.getResource("SWE-Map_Kommuner2007.svg")
-        val uri = resource.toURI()
-        //Parse document
-        val rowEntries: List<RowEntry> =
-            ExcelParser(municipalityCol.toInt(), valueCol.toInt()).readExcelFile(file.inputStream)
-        SvgFiller(uri).parseSvgDocument(rowEntries.map { rowEntry -> rowEntry.municipalityCode to rowEntry.colorCode }
-            .toMap())
-        val output = File("output/output.svg").inputStream()
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(InputStreamResource(output))
+        val output = municipalityService.getColoredMap(file, municipalityCol, valueCol)
+        val header = HttpHeaders()
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=output.svg")
+        return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
+            .body(InputStreamResource(output))
     }
 
 }
