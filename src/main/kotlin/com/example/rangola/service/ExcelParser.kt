@@ -1,7 +1,7 @@
 package com.example.rangola.service
 
-import com.example.rangola.dto.Order
-import com.example.rangola.dto.RowEntry
+import com.example.rangola.domain.dto.Order
+import com.example.rangola.domain.dto.RowEntry
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.DateUtil
 import org.apache.poi.ss.usermodel.Sheet
@@ -9,18 +9,28 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileInputStream
 import java.io.IOException
+import java.io.InputStream
 
-class ExcelParser {
+class ExcelParser(val municipalityCol: Int, val valueCol: Int) {
 
     fun readExcelFile(order: Order): List<RowEntry> {
-
         try {
             val file = FileInputStream(order.path)
+            return readExcelFile(file)
+
+        } catch (e: IOException) {
+            println("Could not parse excel file")
+            return arrayListOf()
+        }
+    }
+
+    fun readExcelFile(file: InputStream): List<RowEntry> {
+        return try {
             val workbook: Workbook = XSSFWorkbook(file)
 
             val sheet = workbook.getSheetAt(0)
 
-            return SheetMapper(0, 2, 0, 289, order.conditionalList).mapSheet(
+            SheetMapper(municipalityCol, valueCol, 0, 289, null).mapSheet(
                 readSheet(
                     sheet
                 )
@@ -28,11 +38,12 @@ class ExcelParser {
 
         } catch (e: IOException) {
             println("Could not parse excel file")
-            return arrayListOf()
+            arrayListOf()
         }
 
 
     }
+
 
     private fun readSheet(sheet: Sheet): Map<Int, MutableList<String>> {
         val data: MutableMap<Int, MutableList<String>> = HashMap()

@@ -1,6 +1,6 @@
 package com.example.rangola.service
 
-import com.example.rangola.dto.RowEntry
+import com.example.rangola.domain.dto.RowEntry
 
 class OutputWriter {
 

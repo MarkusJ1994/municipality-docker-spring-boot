@@ -1,7 +1,6 @@
-package com.example.rangola.data
+package com.example.rangola.domain.dto.data
 
-fun municipalityNameToCodeMap(): Map<String, String> {
-    return mapOf(
+val municipalityNameToCodeMap: Map<String, String> = mapOf(
         "Ale" to "1440",
         "Alingsås" to "1489",
         "Alvesta" to "0764",
@@ -293,4 +292,3 @@ fun municipalityNameToCodeMap(): Map<String, String> {
         "Överkalix" to "2513",
         "Övertorneå" to "2518"
     )
-}

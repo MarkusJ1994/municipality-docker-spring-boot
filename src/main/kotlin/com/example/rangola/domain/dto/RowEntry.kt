@@ -1,4 +1,4 @@
-package com.example.rangola.dto
+package com.example.rangola.domain.dto
 
 data class RowEntry(val municipalityName: String, val municipalityCode: String, val value: String, val colorCode: Int) :
     Comparable<RowEntry> {
