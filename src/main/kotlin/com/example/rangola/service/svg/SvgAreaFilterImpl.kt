@@ -2,11 +2,14 @@ package com.example.rangola.service.svg
 
 import org.springframework.stereotype.Component
 import org.w3c.dom.Document
+import org.w3c.dom.Element
 import org.w3c.dom.Node
+
 
 @Component
 class SvgAreaFilterImpl : SvgAreaFilter {
 
+    val stockholmViewBox = "150 420 50 80"
     val stockholmCodes: Map<String, String> = mapOf(
         "0114" to "Upplands Väsby",
         "0115" to "Vallentuna",
@@ -45,8 +48,6 @@ class SvgAreaFilterImpl : SvgAreaFilter {
         var currNode = nodeList.item(1)
         while (currNode != null) {
             if (currNode.nodeType == Node.ELEMENT_NODE && (currNode.nodeName == "polygon" || currNode.nodeName == "g")) {
-                println(currNode.attributes.getNamedItem("id").nodeName)
-                println(currNode.attributes.getNamedItem("id").nodeValue)
                 val nodeId = currNode.attributes.getNamedItem("id").nodeValue
                 toRemove = !stockholmCodes.containsKey(nodeId)
             }
@@ -60,6 +61,8 @@ class SvgAreaFilterImpl : SvgAreaFilter {
             }
         }
 
+        applyViewBox(document, stockholmViewBox)
+
         return document
     }
 
@@ -70,5 +73,10 @@ class SvgAreaFilterImpl : SvgAreaFilter {
 //    fun dalarna(): Document {
 //        return null
 //    }
+
+    fun applyViewBox(document: Document, viewBox: String) {
+        val svgTag = document.getElementsByTagName("svg").item(0) as Element
+        svgTag.setAttribute("viewBox", viewBox)
+    }
 
 }
