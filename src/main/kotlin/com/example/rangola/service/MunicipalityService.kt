@@ -5,6 +5,8 @@ import java.io.InputStream
 
 interface MunicipalityService {
 
-    fun getColoredMap(file: MultipartFile, municipalityCol: String, valueCol: String): InputStream
+    fun getColoredMapFull(file: MultipartFile, municipalityCol: String, valueCol: String): InputStream
+
+    fun getColoredMapStockholm(file: MultipartFile, municipalityCol: String, valueCol: String): InputStream
 
 }

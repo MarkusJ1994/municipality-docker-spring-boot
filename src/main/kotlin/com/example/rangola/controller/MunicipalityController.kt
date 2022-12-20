@@ -33,7 +33,7 @@ class MunicipalityController(val municipalityService: MunicipalityService) {
         @RequestParam("municipalityCol") municipalityCol: String,
         @RequestParam("valueCol") valueCol: String
     ): ResponseEntity<InputStreamResource> {
-        val output = municipalityService.getColoredMap(file, municipalityCol, valueCol)
+        val output = municipalityService.getColoredMapFull(file, municipalityCol, valueCol)
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(InputStreamResource(output))
     }
 
@@ -43,9 +43,22 @@ class MunicipalityController(val municipalityService: MunicipalityService) {
         @RequestParam("municipalityCol") municipalityCol: String,
         @RequestParam("valueCol") valueCol: String
     ): ResponseEntity<InputStreamResource> {
-        val output = municipalityService.getColoredMap(file, municipalityCol, valueCol)
+        val output = municipalityService.getColoredMapFull(file, municipalityCol, valueCol)
         val header = HttpHeaders()
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=output.svg")
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sverige.svg")
+        return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
+            .body(InputStreamResource(output))
+    }
+
+    @PostMapping("/order/map/stockholm", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun orderColoredMapStockholm(
+        @RequestParam("file") file: MultipartFile,
+        @RequestParam("municipalityCol") municipalityCol: String,
+        @RequestParam("valueCol") valueCol: String
+    ): ResponseEntity<InputStreamResource> {
+        val output = municipalityService.getColoredMapStockholm(file, municipalityCol, valueCol)
+        val header = HttpHeaders()
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stockholm.svg")
         return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
             .body(InputStreamResource(output))
     }
