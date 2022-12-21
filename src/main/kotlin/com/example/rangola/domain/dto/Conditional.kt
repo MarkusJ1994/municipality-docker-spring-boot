@@ -1,4 +1,9 @@
 package com.example.rangola.domain.dto
 
-class Conditional(val code: Int, val matcher: (x: String) -> Boolean) {
+interface Conditional {
+
+    fun match(x: String): Boolean
+
+    fun getColorCode(): Int
+
 }

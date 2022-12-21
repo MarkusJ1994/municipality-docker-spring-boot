@@ -40,6 +40,72 @@ class SvgAreaFilterImpl : SvgAreaFilter {
     )
 
     override fun stockholm(document: Document): Document {
+        return filter(document, stockholmCodes, stockholmViewBox)
+    }
+
+    val gothenburg = mapOf<String, String>(
+        "1401" to "Härryda",
+        "1402" to "Partille",
+        "1407" to "Öckerö",
+        "1415" to "Stenungsund",
+        "1419" to "Tjörn",
+        "1421" to "Orust",
+        "1427" to "Sotenäs",
+        "1430" to "Munkedal",
+        "1435" to "Tanum",
+        "1438" to "Dals-Ed",
+        "1439" to "Färgelanda",
+        "1440" to "Ale",
+        "1441" to "Lerum",
+        "1442" to "Vårgårda",
+        "1443" to "Bollebygd",
+        "1444" to "Grästorp",
+        "1445" to "Essunga",
+        "1446" to "Karlsborg",
+        "1447" to "Gullspång",
+        "1452" to "Tranemo",
+        "1460" to "Bengtsfors",
+        "1461" to "Mellerud",
+        "1462" to "Lilla Edet",
+        "1463" to "Mark",
+        "1465" to "Svenljunga",
+        "1466" to "Herrljunga",
+        "1470" to "Vara",
+        "1471" to "Götene",
+        "1472" to "Tibro",
+        "1473" to "Töreboda",
+        "1480" to "Göteborg",
+        "1481" to "Mölndal",
+        "1482" to "Kungälv",
+        "1484" to "Lysekil",
+        "1485" to "Uddevalla",
+        "1486" to "Strömstad",
+        "1487" to "Vänersborg",
+        "1488" to "Trollhättan",
+        "1489" to "Alingsås",
+        "1490" to "Borås",
+        "1491" to "Ulricehamn",
+        "1492" to "Åmål",
+        "1493" to "Mariestad",
+        "1494" to "Lidköping",
+        "1495" to "Skara",
+        "1496" to "Skövde",
+        "1497" to "Hjo",
+        "1498" to "Tidaholm",
+        "1499" to "Falköping",
+    )
+    val gothenburgViewbox = "0 500 100 10"
+
+    override fun gothenburg(document: Document): Document {
+        return filter(document, gothenburg, gothenburgViewbox)
+    }
+
+//
+//    fun dalarna(): Document {
+//        return null
+//    }
+
+    fun filter(document: Document, codes: Map<String, String>, viewBox: String): Document {
         val nodeList = document.getElementsByTagName("*")
 
         var toRemove = false
@@ -49,7 +115,7 @@ class SvgAreaFilterImpl : SvgAreaFilter {
         while (currNode != null) {
             if (currNode.nodeType == Node.ELEMENT_NODE && (currNode.nodeName == "polygon" || currNode.nodeName == "g")) {
                 val nodeId = currNode.attributes.getNamedItem("id").nodeValue
-                toRemove = !stockholmCodes.containsKey(nodeId)
+                toRemove = !codes.containsKey(nodeId)
             }
             if (toRemove) {
                 val nodeToRemove = currNode
@@ -61,18 +127,10 @@ class SvgAreaFilterImpl : SvgAreaFilter {
             }
         }
 
-        applyViewBox(document, stockholmViewBox)
+        applyViewBox(document, viewBox)
 
         return document
     }
-
-//    fun gothenburg(): Document {
-//        return null
-//    }
-//
-//    fun dalarna(): Document {
-//        return null
-//    }
 
     fun applyViewBox(document: Document, viewBox: String) {
         val svgTag = document.getElementsByTagName("svg").item(0) as Element

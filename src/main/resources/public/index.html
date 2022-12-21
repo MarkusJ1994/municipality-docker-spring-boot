@@ -9,7 +9,8 @@
 <body>
 <h1>Rangola</h1>
 <div class="container">
-    <form action="order/map/all" enctype="multipart/form-data" method="post">
+    <form action="order/map" enctype="multipart/form-data" id="submit-form" method="post">
+
         <div>
             <label for="municipalityCol">Municipality column</label>
             <input id="municipalityCol" name="municipalityCol" type="number">
@@ -18,6 +19,11 @@
         <div>
             <label for="valueCol">Value column</label>
             <input id="valueCol" name="valueCol" type="number">
+        </div>
+
+        <div>
+            <label for="valueToColorCol">Mapping column</label>
+            <input id="valueToColorCol" name="valueToColorCol" type="number">
         </div>
 
         <div>

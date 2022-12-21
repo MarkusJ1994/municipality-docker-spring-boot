@@ -11,7 +11,11 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 
-class ExcelParser(val municipalityCol: Int, val valueCol: Int) {
+class ExcelParser(
+    private val municipalityCol: Int,
+    private val valueCol: Int,
+    private val valueToColorCol: Int? = null,
+) {
 
     fun readExcelFile(order: Order): List<RowEntry> {
         try {
@@ -30,10 +34,13 @@ class ExcelParser(val municipalityCol: Int, val valueCol: Int) {
 
             val sheet = workbook.getSheetAt(0)
 
-            SheetMapper(municipalityCol, valueCol, 0, 289, null).mapSheet(
-                readSheet(
-                    sheet
-                )
+            val parsedSheet = readSheet(
+                sheet
+            )
+
+            SheetMapper(
+                municipalityCol, valueCol, 0, 289, parsedSheet, valueToColorCol
+            ).mapSheet(
             )
 
         } catch (e: IOException) {
@@ -43,7 +50,6 @@ class ExcelParser(val municipalityCol: Int, val valueCol: Int) {
 
 
     }
-
 
     private fun readSheet(sheet: Sheet): Map<Int, MutableList<String>> {
         val data: MutableMap<Int, MutableList<String>> = HashMap()

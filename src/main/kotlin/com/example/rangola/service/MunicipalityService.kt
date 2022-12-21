@@ -4,8 +4,25 @@ import org.springframework.web.multipart.MultipartFile
 
 interface MunicipalityService {
 
-    fun getColoredMapFull(file: MultipartFile, municipalityCol: String, valueCol: String): String
+    fun coloredMapSweden(
+        file: MultipartFile,
+        municipalityCol: String,
+        valueCol: String,
+        valueToColorCol: String?
+    ): String
 
-    fun getColoredMapStockholm(file: MultipartFile, municipalityCol: String, valueCol: String): String
+    fun coloredMapStockholm(
+        file: MultipartFile,
+        municipalityCol: String,
+        valueCol: String,
+        valueToColorCol: String?
+    ): String
+
+    fun coloredMapGothenburg(
+        file: MultipartFile,
+        municipalityCol: String,
+        valueCol: String,
+        valueToColorCol: String?
+    ): String
 
 }

@@ -1,12 +1,23 @@
 package com.example.rangola.domain.dto.data
 
-val colorCodes: Map<Int, String> = mapOf(
-    1 to "#38761d", //green
-    2 to "#ff0000", //red
-    3 to "#ffff00", //yellow
-    4 to "#f4b083", //orange
-    5 to "#fef2cb", //beige
-    6 to "#deeaf6", //ljusblå
-    7 to "#9cc2e5", //blå
-    8 to "#b7b7b7" //grå
+enum class ColorCodes(val hex: String) {
+    GREEN("#38761d"),
+    RED("#ff0000"),
+    YELLOW("#ffff00"),
+    ORANGE("#f4b083"),
+    BEIGE("#fef2cb"),
+    LIGHTBLUE("#deeaf6"),
+    BLUE("#9cc2e5"),
+    GREY("#b7b7b7")
+}
+
+val colorCodes: Map<Int, ColorCodes> = mapOf(
+    1 to ColorCodes.GREEN,
+    2 to ColorCodes.RED,
+    3 to ColorCodes.YELLOW,
+    4 to ColorCodes.ORANGE,
+    5 to ColorCodes.BEIGE,
+    6 to ColorCodes.LIGHTBLUE,
+    7 to ColorCodes.BLUE,
+    8 to ColorCodes.GREY
 )

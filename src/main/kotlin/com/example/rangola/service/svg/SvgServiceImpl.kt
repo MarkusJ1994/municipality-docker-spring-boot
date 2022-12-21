@@ -16,7 +16,7 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
 @Component
-class SvgFillerImpl : SvgFiller {
+class SvgServiceImpl : SvgService {
 
     private fun initDocument(): Document {
         val resource: URL? = javaClass.classLoader.getResource("SWE-Map_Kommuner2007.svg")
@@ -37,7 +37,7 @@ class SvgFillerImpl : SvgFiller {
         transformer.transform(input, output)
     }
 
-    override fun fillDocument(municipalityToColorCode: Map<String, Int>): Document {
+    override fun colorDocument(municipalityToColorCode: Map<String, Int>): Document {
         val document = initDocument()
         var municipalities = 0
         val nodeList = document.getElementsByTagName("*")
@@ -70,7 +70,7 @@ class SvgFillerImpl : SvgFiller {
 
     private fun parsePolygon(node: Node, nodeId: String, municipalityToColorCode: Map<String, Int>) {
         val style: Node? = node.attributes.getNamedItem("style")
-        val colorCode: String? = colorCodes[municipalityToColorCode[nodeId]]
+        val colorCode: String? = colorCodes[municipalityToColorCode[nodeId]]?.hex
         if (style != null && colorCode != null) {
             style.textContent = style.textContent.replace("#ccc", colorCode)
         }

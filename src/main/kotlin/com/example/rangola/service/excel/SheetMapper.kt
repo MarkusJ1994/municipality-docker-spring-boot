@@ -9,10 +9,14 @@ class SheetMapper(
     private val valueColumn: Int,
     private val firstRow: Int,
     private val lastRow: Int,
-    private val conditionalList: List<Conditional>?
+    private val sheetData: Map<Int, List<String>>,
+    valueToColorColumn: Int? = null
 ) {
 
-    fun mapSheet(sheetData: Map<Int, List<String>>): List<RowEntry> {
+    private val conditionalList: List<Conditional>? =
+        if (valueToColorColumn != null) ConditionalParser(valueToColorColumn).parseConditionals(sheetData) else null
+
+    fun mapSheet(): List<RowEntry> {
         return sheetData.filter { rowIsWithinBounds(it.key) }.map { constructMappedEntry(it) }
     }
 
@@ -45,8 +49,8 @@ class SheetMapper(
     private fun getRowValueColorCode(columns: List<String>): Int {
         if (conditionalList != null) {
             for (conditional in conditionalList) {
-                if (conditional.matcher(getRowValue(columns))) {
-                    return conditional.code
+                if (conditional.match(getRowValue(columns))) {
+                    return conditional.getColorCode()
                 }
             }
         } else {

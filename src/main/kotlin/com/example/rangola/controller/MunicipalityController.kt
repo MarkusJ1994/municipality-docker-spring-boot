@@ -33,13 +33,14 @@ class MunicipalityController(val municipalityService: MunicipalityService) {
             .body(OutputWriter().writeOutput(rowEntries))
     }
 
-    @PostMapping("/order/map", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/order/map/sweden", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun orderColoredMap(
         @RequestParam("file") file: MultipartFile,
         @RequestParam("municipalityCol") municipalityCol: String,
-        @RequestParam("valueCol") valueCol: String
+        @RequestParam("valueCol") valueCol: String,
+        @RequestParam("valueToColorCol") valueToColorCol: String?
     ): ResponseEntity<InputStreamResource> {
-        val filePath = municipalityService.getColoredMapFull(file, municipalityCol, valueCol)
+        val filePath = municipalityService.coloredMapSweden(file, municipalityCol, valueCol, valueToColorCol)
         val header = HttpHeaders()
         header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sverige.svg")
         return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
@@ -50,26 +51,43 @@ class MunicipalityController(val municipalityService: MunicipalityService) {
     fun orderColoredMapStockholm(
         @RequestParam("file") file: MultipartFile,
         @RequestParam("municipalityCol") municipalityCol: String,
-        @RequestParam("valueCol") valueCol: String
+        @RequestParam("valueCol") valueCol: String,
+        @RequestParam("valueToColorCol") valueToColorCol: String?
     ): ResponseEntity<InputStreamResource> {
-        val filePath = municipalityService.getColoredMapStockholm(file, municipalityCol, valueCol)
+        val filePath = municipalityService.coloredMapStockholm(file, municipalityCol, valueCol, valueToColorCol)
         val header = HttpHeaders()
         header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stockholm.svg")
         return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
             .body(InputStreamResource(File(filePath).inputStream()))
     }
 
-    @PostMapping("/order/map/all", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/order/map/gothenburg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun orderColoredMapGothenburg(
+        @RequestParam("file") file: MultipartFile,
+        @RequestParam("municipalityCol") municipalityCol: String,
+        @RequestParam("valueCol") valueCol: String,
+        @RequestParam("valueToColorCol") valueToColorCol: String?
+    ): ResponseEntity<InputStreamResource> {
+        val filePath = municipalityService.coloredMapGothenburg(file, municipalityCol, valueCol, valueToColorCol)
+        val header = HttpHeaders()
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=gothenburg.svg")
+        return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
+            .body(InputStreamResource(File(filePath).inputStream()))
+    }
+
+    @PostMapping("/order/map", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun orderColoredMapAll(
         @RequestParam("file") file: MultipartFile,
         @RequestParam("municipalityCol") municipalityCol: String,
-        @RequestParam("valueCol") valueCol: String
+        @RequestParam("valueCol") valueCol: String,
+        @RequestParam("valueToColorCol") valueToColorCol: String?
     ): ResponseEntity<StreamingResponseBody> {
-        val sweden = municipalityService.getColoredMapFull(file, municipalityCol, valueCol)
-        val sthlm = municipalityService.getColoredMapStockholm(file, municipalityCol, valueCol)
+        val sweden = municipalityService.coloredMapSweden(file, municipalityCol, valueCol, valueToColorCol)
+        val sthlm = municipalityService.coloredMapStockholm(file, municipalityCol, valueCol, valueToColorCol)
+        val gothenburg = municipalityService.coloredMapGothenburg(file, municipalityCol, valueCol, valueToColorCol)
 
         val files = listOf(
-            File(sweden), File(sthlm)
+            File(sweden), File(sthlm), File(gothenburg)
         )
 
         return ResponseEntity.ok()
