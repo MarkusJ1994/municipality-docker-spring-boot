@@ -3,7 +3,6 @@ package com.example.rangola.service.excel
 import com.example.rangola.domain.dto.Conditional
 import com.example.rangola.domain.dto.NumberConditional
 import com.example.rangola.domain.dto.StringConditional
-import com.example.rangola.domain.dto.data.colorCodes
 
 class ConditionalParser(valueToColorCol: Int) {
 
@@ -32,15 +31,15 @@ class ConditionalParser(valueToColorCol: Int) {
     private val secondConditionalCol: Int = valueToColorCol + 4
 
     fun parseConditionals(sheetData: Map<Int, List<String>>): List<Conditional> {
-        return sheetData.filter { rowIsWithinBounds(it.key) }.map { constructConditional(it) }
+        return sheetData.filter { rowIsWithinBounds(it) }.map { constructConditional(it) }
     }
 
-    private fun rowIsWithinBounds(row: Int): Boolean {
-        return colorCodes.containsKey(row)
+    private fun rowIsWithinBounds(entry: Map.Entry<Int, List<String>>): Boolean {
+        return entry.value[colorCodeCol].isNotBlank()
     }
 
     private fun constructConditional(entry: Map.Entry<Int, List<String>>): Conditional {
-        val colorCode = entry.value[colorCodeCol].toInt()
+        val colorCode = entry.value[colorCodeCol].toDouble().toInt()
         val typeCol: Type = Type.valueOf(entry.value[typeCol])
 
         return if (typeCol == Type.NUMBER) NumberConditional(
