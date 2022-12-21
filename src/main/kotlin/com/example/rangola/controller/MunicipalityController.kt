@@ -1,10 +1,6 @@
 package com.example.rangola.controller
 
-import com.example.rangola.domain.dto.Order
-import com.example.rangola.domain.dto.RowEntry
 import com.example.rangola.service.MunicipalityService
-import com.example.rangola.service.excel.ExcelParser
-import com.example.rangola.service.excel.OutputWriter
 import org.apache.commons.compress.utils.IOUtils
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -15,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.File
 import java.io.FileInputStream
+import java.net.URL
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -23,14 +20,19 @@ import java.util.zip.ZipOutputStream
 @RestController
 class MunicipalityController(val municipalityService: MunicipalityService) {
 
-    @PostMapping("/order")
+    @GetMapping("/example")
     @ResponseBody
-    fun order(order: Order): ResponseEntity<String> {
-        val header = HttpHeaders()
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=script.jsx")
-        val rowEntries: List<RowEntry> = ExcelParser(0, 2).readExcelFile(order)
-        return ResponseEntity.ok().headers(header).contentType(MediaType.TEXT_PLAIN)
-            .body(OutputWriter().writeOutput(rowEntries))
+    fun downloadExampleFile(): ResponseEntity<InputStreamResource> {
+        val resource: URL? = javaClass.classLoader.getResource("exampleWithStringMappingsToColorCodes.xlsx")
+        if (resource != null) {
+            val uri = resource.toURI()
+            val header = HttpHeaders()
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=example.xlsx")
+            return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(InputStreamResource(File(uri).inputStream()))
+        } else {
+            throw IllegalStateException("Example xlsx file not found")
+        }
     }
 
     @PostMapping("/order/map/sweden", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])

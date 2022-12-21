@@ -9,30 +9,263 @@
 <body>
 <h1>Rangola</h1>
 <div class="container">
-    <form action="order/map" enctype="multipart/form-data" id="submit-form" method="post">
+    <div class="form-container">
+        <form action="order/map" class="submit-form" enctype="multipart/form-data" id="submit-form" method="post">
 
-        <div>
-            <label for="municipalityCol">Municipality column</label>
-            <input id="municipalityCol" name="municipalityCol" type="number">
-        </div>
+            <div>
+                <label for="municipalityCol">Municipality column</label>
+                <input id="municipalityCol" name="municipalityCol" type="number">
+            </div>
 
-        <div>
-            <label for="valueCol">Value column</label>
-            <input id="valueCol" name="valueCol" type="number">
-        </div>
+            <div>
+                <label for="valueCol">Value column</label>
+                <input id="valueCol" name="valueCol" type="number">
+            </div>
 
-        <div>
-            <label for="valueToColorCol">Mapping column</label>
-            <input id="valueToColorCol" name="valueToColorCol" type="number">
-        </div>
+            <div>
+                <label for="valueToColorCol">Mapping column</label>
+                <input id="valueToColorCol" name="valueToColorCol" type="number">
+            </div>
 
-        <div>
-            <label for="file">Excel file</label>
-            <input id="file" name="file" type="file">
-        </div>
+            <div>
+                <label for="file">Excel file</label>
+                <input id="file" name="file" type="file">
+            </div>
 
-        <input type="submit">
-    </form>
+            <input type="submit">
+        </form>
+    </div>
+    <div class="docs-container">
+        <h3>Documentation</h3>
+        <fieldset>
+            <legend>Municipality column (Mandatory)</legend>
+            <p>Defines which column holds the municipality names. This is 0-indexed, so if the municipality names are in
+                column A on the Excel sheet, this value should be 0</p>
+        </fieldset>
+        <fieldset>
+            <legend>Value column (Mandatory)</legend>
+            <p>Defines which column holds the color deciding value. This is 0-indexed, so if the values are in
+                column B on the Excel sheet, this value should be 1</p>
+        </fieldset>
+        <fieldset>
+            <legend>Mapping column (Optional)</legend>
+            <p>Defines the mapping function for a color. Can be applied to both number and string values. The mapping
+                column is 0-indexed and decides where the program starts to interpret the rules. See table below for
+                guidance</p>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Color code</th>
+                    <th>Data type</th>
+                    <th>Primary comparison value</th>
+                    <th>Operation</th>
+                    <th>Secondary comparison value</th>
+                </tr>
+                <tr>
+                    <td>Column</td>
+                    <td>Mapping column</td>
+                    <td>Mapping column + 1</td>
+                    <td>Mapping column + 2</td>
+                    <td>Mapping column + 3</td>
+                    <td>Mapping column + 4</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>A number referencing a color, see below color code section for alternatives</td>
+                    <td>A datatype for the comparison values, see below datatype section for alternatives</td>
+                    <td>A string or number value</td>
+                    <td>A comparison operation, see below operation section for alternatives</td>
+                    <td>Optional secondary comparison value for intervals. Only valid for number interval comparisons
+                    </td>
+                </tr>
+            </table>
+
+            <h4>Color codes</h4>
+            <div>
+                <table>
+                    <tr>
+                        <th>Code</th>
+                        <th>Color</th>
+                        <th>Hex</th>
+                    </tr>
+                    <tr bgcolor="#38761d">
+                        <td>1</td>
+                        <td>Green</td>
+                        <td>#38761d</td>
+                    </tr>
+                    <tr bgcolor="#ff0000">
+                        <td>2</td>
+                        <td>Red</td>
+                        <td>#ff0000</td>
+                    </tr>
+                    <tr bgcolor="#ffff00">
+                        <td>3</td>
+                        <td>Yellow</td>
+                        <td>#ffff00</td>
+                    </tr>
+                    <tr bgcolor="#f4b083">
+                        <td>4</td>
+                        <td>Orange</td>
+                        <td>#f4b083</td>
+                    </tr>
+                    <tr bgcolor="#fef2cb">
+                        <td>5</td>
+                        <td>Beige</td>
+                        <td>#fef2cb</td>
+                    </tr>
+                    <tr bgcolor="#deeaf6">
+                        <td>6</td>
+                        <td>Light blue</td>
+                        <td>#deeaf6</td>
+                    </tr>
+                    <tr bgcolor="#9cc2e5">
+                        <td>7</td>
+                        <td>Blue</td>
+                        <td>#9cc2e5</td>
+                    </tr>
+                    <tr bgcolor="#b7b7b7">
+                        <td>8</td>
+                        <td>Grey</td>
+                        <td>#b7b7b7</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4>Data types</h4>
+            <div>
+                <table>
+                    <tr>
+                        <th>Code</th>
+                        <th>Type</th>
+                    </tr>
+                    <tr>
+                        <td>STRING</td>
+                        <td>A text</td>
+                    </tr>
+                    <tr>
+                        <td>NUMBER</td>
+                        <td>A number</td>
+                    </tr>
+                </table>
+            </div>
+            <h4>Operations</h4>
+            <div>
+                <table>
+                    <tr>
+                        <th>Code</th>
+                        <th>Operation</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>eq</td>
+                        <td>==</td>
+                        <td>Equals</td>
+                    </tr>
+                    <tr>
+                        <td>gt</td>
+                        <td>></td>
+                        <td>Greater than</td>
+                    </tr>
+                    <tr>
+                        <td>lt</td>
+                        <td><</td>
+                        <td>Lesser than</td>
+                    </tr>
+                    <tr>
+                        <td>gt_eq</td>
+                        <td>>=</td>
+                        <td>Greater or equal</td>
+                    </tr>
+                    <tr>
+                        <td>lt_eq</td>
+                        <td><=</td>
+                        <td>Lesser or equal</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4>Example mapping inside Excel sheet</h4>
+            <div>
+                <p>Below mapping example starts at column B. Given the 0-indexed definition, this would yield a mapping
+                    column value of <b>1</b></p>
+
+                <table class="mapping-example">
+                    <tr bgcolor="#b7b7b7">
+                        <th bgcolor="#b7b7b7">(Row)</th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>F</th>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#b7b7b7">1</td>
+                        <td></td>
+                        <td>1</td>
+                        <td>NUMBER</td>
+                        <td>25</td>
+                        <td>eq</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#b7b7b7">2</td>
+                        <td></td>
+                        <td>2</td>
+                        <td>NUMBER</td>
+                        <td>25</td>
+                        <td>lt</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#b7b7b7">3</td>
+                        <td></td>
+                        <td>3</td>
+                        <td>NUMBER</td>
+                        <td>25</td>
+                        <td>gt</td>
+                        <td>75</td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#b7b7b7">4</td>
+                        <td></td>
+                        <td>5</td>
+                        <td>STRING</td>
+                        <td>"Optisk sortering"</td>
+                        <td>eq</td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <ul>
+                    <li>Row 1 maps any row where <b>value is equal to 25</b> to <b>color code 1</b> which is green</li>
+                    <li>Row 2 maps any row where <b>value is lesser than 25</b> to <b>color code 2</b> which is red</li>
+                    <li>Row 3 maps any row where <b>value is greater than 25 and lesser than 75</b> to <b>color code
+                        3</b>
+                        which is
+                        yellow
+                    </li>
+                    <li>Row 4 maps any row where <b>value is equal to "Optisk sortering"</b> to <b>color code 5</b>
+                        which is
+                        beige
+                    </li>
+                </ul>
+
+                <br/>
+                <br/>
+                <p>Click below to download an example file that can be used to generate SVG's. For the example file the
+                    column values are:</p>
+                <ul>
+                    <li>Municipality column = 0</li>
+                    <li>Value column = 3</li>
+                    <li>Mapping column = 5</li>
+                </ul>
+                <form action="example" class="download-form" method="get">
+                    <input type="submit" value="Download example file" width="100px">
+                </form>
+            </div>
+        </fieldset>
+    </div>
 </div>
 </body>
 </html>
