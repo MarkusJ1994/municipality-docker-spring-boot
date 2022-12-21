@@ -8,4 +8,6 @@ interface SvgAreaFilter {
 
     fun gothenburg(document: Document): Document
 
+    fun dalarna(document: Document): Document
+
 }

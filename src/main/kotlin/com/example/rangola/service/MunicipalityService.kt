@@ -25,4 +25,11 @@ interface MunicipalityService {
         valueToColorCol: String?
     ): String
 
+    fun coloredMapDalarna(
+        file: MultipartFile,
+        municipalityCol: String,
+        valueCol: String,
+        valueToColorCol: String?
+    ): String
+
 }

@@ -42,7 +42,21 @@ class MunicipalityController(val municipalityService: MunicipalityService) {
     ): ResponseEntity<InputStreamResource> {
         val filePath = municipalityService.coloredMapSweden(file, municipalityCol, valueCol, valueToColorCol)
         val header = HttpHeaders()
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sverige.svg")
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=sweden.svg")
+        return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
+            .body(InputStreamResource(File(filePath).inputStream()))
+    }
+
+    @PostMapping("/order/map/dalarna", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun orderColoredMapDalarna(
+        @RequestParam("file") file: MultipartFile,
+        @RequestParam("municipalityCol") municipalityCol: String,
+        @RequestParam("valueCol") valueCol: String,
+        @RequestParam("valueToColorCol") valueToColorCol: String?
+    ): ResponseEntity<InputStreamResource> {
+        val filePath = municipalityService.coloredMapDalarna(file, municipalityCol, valueCol, valueToColorCol)
+        val header = HttpHeaders()
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dalarna.svg")
         return ResponseEntity.ok().headers(header).contentType(MediaType.APPLICATION_XML)
             .body(InputStreamResource(File(filePath).inputStream()))
     }

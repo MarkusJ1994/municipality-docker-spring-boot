@@ -43,7 +43,8 @@ class SvgAreaFilterImpl : SvgAreaFilter {
         return filter(document, stockholmCodes, stockholmViewBox)
     }
 
-    val gothenburg = mapOf<String, String>(
+    val gothenburgViewbox = "0 500 100 10"
+    val gothenburgCodes = mapOf(
         "1401" to "Härryda",
         "1402" to "Partille",
         "1407" to "Öckerö",
@@ -94,16 +95,34 @@ class SvgAreaFilterImpl : SvgAreaFilter {
         "1498" to "Tidaholm",
         "1499" to "Falköping",
     )
-    val gothenburgViewbox = "0 500 100 10"
+
+    val dalarnaViewBox = "40 400 100 10"
+    val dalarnaCodes: Map<String, String> = mapOf(
+        "2021" to "Vansbro",
+        "2023" to "Malung-Sälen",
+        "2026" to "Gagnef",
+        "2029" to "Leksand",
+        "2031" to "Rättvik",
+        "2034" to "Orsa",
+        "2039" to "Älvdalen",
+        "2061" to "Smedjebacken",
+        "2062" to "Mora",
+        "2080" to "Falun",
+        "2081" to "Borlänge",
+        "2082" to "Säter",
+        "2083" to "Hedemora",
+        "2084" to "Avesta",
+        "2085" to "Ludvika"
+    )
 
     override fun gothenburg(document: Document): Document {
-        return filter(document, gothenburg, gothenburgViewbox)
+        return filter(document, gothenburgCodes, gothenburgViewbox)
     }
 
-//
-//    fun dalarna(): Document {
-//        return null
-//    }
+
+    override fun dalarna(document: Document): Document {
+        return filter(document, dalarnaCodes, dalarnaViewBox)
+    }
 
     fun filter(document: Document, codes: Map<String, String>, viewBox: String): Document {
         val nodeList = document.getElementsByTagName("*")

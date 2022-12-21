@@ -87,4 +87,31 @@ class MunicipalityServiceImpl(val svgService: SvgService, val svgAreaFilter: Svg
         return filePath
     }
 
+    override fun coloredMapDalarna(
+        file: MultipartFile,
+        municipalityCol: String,
+        valueCol: String,
+        valueToColorCol: String?
+    ): String {
+        val rowEntries: List<RowEntry> =
+            ExcelParser(
+                municipalityCol.toInt(),
+                valueCol.toInt(),
+                valueToColorCol?.toInt()
+            ).readExcelFile(file.inputStream)
+        val document =
+            svgService.colorDocument(rowEntries.map { rowEntry -> rowEntry.municipalityCode to rowEntry.colorCode }
+                .toMap())
+
+        val filePath = "output/dalarna.svg"
+
+        svgService.generateOutput(
+            svgAreaFilter.dalarna(
+                document
+            ),
+            filePath
+        )
+        return filePath
+    }
+
 }
