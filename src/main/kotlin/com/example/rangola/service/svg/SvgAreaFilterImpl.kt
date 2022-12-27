@@ -39,10 +39,6 @@ class SvgAreaFilterImpl : SvgAreaFilter {
         "0192" to "Nynäshamn",
     )
 
-    override fun stockholm(document: Document): Document {
-        return filter(document, stockholmCodes, stockholmViewBox)
-    }
-
     val gothenburgViewbox = "0 500 100 10"
     val gothenburgCodes = mapOf(
         "1401" to "Härryda",
@@ -114,6 +110,10 @@ class SvgAreaFilterImpl : SvgAreaFilter {
         "2084" to "Avesta",
         "2085" to "Ludvika"
     )
+
+    override fun stockholm(document: Document): Document {
+        return filter(document, stockholmCodes, stockholmViewBox)
+    }
 
     override fun gothenburg(document: Document): Document {
         return filter(document, gothenburgCodes, gothenburgViewbox)

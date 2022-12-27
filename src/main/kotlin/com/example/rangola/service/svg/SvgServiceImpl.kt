@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamResult
 @Component
 class SvgServiceImpl : SvgService {
 
-    private fun initDocument(): Document {
+    fun initDocument(): Document {
         val resource: URL? = javaClass.classLoader.getResource("SWE-Map_Kommuner2007.svg")
         if (resource != null) {
             val uri = resource.toURI()
